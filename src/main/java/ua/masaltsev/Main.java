@@ -1,4 +1,4 @@
-package ua.masaltsev.home;
+package ua.masaltsev;
 
 import ua.masaltsev.opt.Computer;
 
