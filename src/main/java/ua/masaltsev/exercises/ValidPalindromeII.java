@@ -10,20 +10,6 @@ public class ValidPalindromeII {
         int leftIndex = 0;
         int rightIndex = chars.length-1;
 
-        while (leftIndex != rightIndex) {
-            if (chars[leftIndex] == chars[rightIndex]) {
-                leftIndex++;
-                rightIndex--;
-            } else {
-                if (!isMismatchPresent) {
-                    if (chars[leftIndex+1] == chars[rightIndex]) {
-
-                    }
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return false;
     }
 }
