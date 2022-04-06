@@ -13,6 +13,8 @@ public class WaterContainer {
             }
         }
 
+        return -1;
+
         /*int volume = 0;
 
         for (int i = 0; i < height.length-1; i++) {
