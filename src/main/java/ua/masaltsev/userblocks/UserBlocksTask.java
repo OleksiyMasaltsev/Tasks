@@ -24,43 +24,65 @@ import java.util.*;
 
 public class UserBlocksTask {
 
-    private static final List<User> userList = new ArrayList<>();
+    private final Set<String> uniqueEmails = new HashSet<>();
 
-    public static List<User> extractUsersFrom(String input) throws WrongInputException {
+    public List<User> extractUsersFrom(String input) throws WrongInputException {
+
+        final List<User> userList = new ArrayList<>();
 
         String[] inputArray = input.split("\n");
         int lineCounter = 0;
 
         for (String inputLine : inputArray) {
             lineCounter++;
-            String[] inputLineArray = inputLine.split(" ");
-            String s1 = inputLineArray[0];
-            String s2 = inputLineArray[inputArray.length-1];
-            userList.add(getValidUser(s1, s2, lineCounter));
+            User user = getValidUser(inputLine.trim(), lineCounter);
+            if (isEmailUnique(user.getEmail())) {
+                userList.add(user);
+            }
         }
 
         return userList;
     }
 
-    private static User getValidUser(String s1, String s2, int lineCounter) throws WrongInputException {
+    private boolean isEmailUnique(String email) {
+        if (!uniqueEmails.contains(email)) {
+            uniqueEmails.add(email);
+            return true;
+        } else return false;
+    }
+
+    private User getValidUser(String inputLine, int lineCounter) throws WrongInputException {
+
+        String[] inputLineArray = inputLine.split(" ");
+
+        String s1 = inputLineArray[0];
+        String s2 = inputLineArray[inputLineArray.length-1];
 
         EmailValidator validator = EmailValidator.getInstance();
+        String name;
+        String email;
 
         if (validator.isValid(s1) && validator.isValid(s2)) {
-            throw new WrongInputException("Wrong input data in line " + lineCounter);
+            throw new WrongInputException("Wrong input data: 2 valid emails in line #" + lineCounter);
         }
         if (!validator.isValid(s1) && !validator.isValid(s2)) {
-            throw new WrongInputException("Wrong input data in line " + lineCounter);
+            throw new WrongInputException("Wrong input data: valid email not found in line #" + lineCounter);
         } else if (validator.isValid(s1)){
-            return new User(s2, s1);
+            email = s1;
+            name = inputLine.substring(inputLine.indexOf(" ")+1);
+            return new User(name, email);
         } else {
-            return new User(s1, s2);
+            email = s2;
+            name = inputLine.substring(0, inputLine.lastIndexOf(" "));
+            return new User(name, email);
         }
     }
 }
 
 
-
+// trim - done!
+// check there are no email duplicates
+// describe exception messages - done!
 
 
 
