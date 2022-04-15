@@ -24,9 +24,13 @@ import java.util.*;
 
 public class UserBlocksTask {
 
+    public static final String VALID_EMAIL_NOT_FOUND_IN_LINE = "Wrong input data: valid email not found in line #";
+    public static final String TWO_VALID_EMAILS_IN_LINE = "Wrong input data: 2 valid emails in the line #";
+    public static final String NOT_ENOUGH_INFO_IN_LINE = "Wrong input data: not enough info in the line #";
+
     private final Set<String> uniqueEmails = new HashSet<>();
 
-    public List<User> extractUsersFrom(String input) throws WrongInputException {
+    public List<User> extractUsersFrom(String input) {
 
         final List<User> userList = new ArrayList<>();
 
@@ -51,22 +55,28 @@ public class UserBlocksTask {
         } else return false;
     }
 
-    private User getValidUser(String inputLine, int lineCounter) throws WrongInputException {
+    private User getValidUser(String inputLine, int lineCounter) {
 
         String[] inputLineArray = inputLine.split(" ");
+        String s1;
+        String s2;
 
-        String s1 = inputLineArray[0];
-        String s2 = inputLineArray[inputLineArray.length-1];
+        if (inputLineArray.length > 1) {
+            s1 = inputLineArray[0];
+            s2 = inputLineArray[inputLineArray.length-1];
+        } else {
+            throw new WrongInputException(NOT_ENOUGH_INFO_IN_LINE + lineCounter);
+        }
 
         EmailValidator validator = EmailValidator.getInstance();
         String name;
         String email;
 
         if (validator.isValid(s1) && validator.isValid(s2)) {
-            throw new WrongInputException("Wrong input data: 2 valid emails in line #" + lineCounter);
+            throw new WrongInputException(TWO_VALID_EMAILS_IN_LINE + lineCounter);
         }
         if (!validator.isValid(s1) && !validator.isValid(s2)) {
-            throw new WrongInputException("Wrong input data: valid email not found in line #" + lineCounter);
+            throw new WrongInputException(VALID_EMAIL_NOT_FOUND_IN_LINE + lineCounter);
         } else if (validator.isValid(s1)){
             email = s1;
             name = inputLine.substring(inputLine.indexOf(" ")+1);
@@ -80,9 +90,9 @@ public class UserBlocksTask {
 }
 
 
-// trim - done!
-// check there are no email duplicates
-// describe exception messages - done!
+
+
+
 
 
 
