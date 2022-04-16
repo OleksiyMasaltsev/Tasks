@@ -80,6 +80,23 @@ class UserBlocksTest {
         WrongInputException wrongInputException = assertThrows(WrongInputException.class, () -> task.extractUsersFrom(block));
         assertEquals(VALID_EMAIL_NOT_FOUND_IN_LINE + 4, wrongInputException.getMessage());
     }
+
+    @Test
+    void testEqualEmails() {
+        String block = "Jack jack@yahoo.com\n" +
+                "oksi_23@ukr.net Ieromenko Oksi\n" +
+                "oksi_23@ukr.net Ieromenko Oksi\n" +
+                "Oleksiy Olegovitch Masaltsev a.o.masaltsev@gmail.com";
+
+        List<User> resultList = task.extractUsersFrom(block);
+
+        assertEquals("Jack jack@yahoo.com", resultList.get(0).getName()
+                + " " + resultList.get(0).getEmail());
+        assertEquals("Ieromenko Oksi oksi_23@ukr.net", resultList.get(2).getName()
+                + " " + resultList.get(2).getEmail());
+        assertEquals("Oleksiy Olegovitch Masaltsev a.o.masaltsev@gmail.com", resultList.get(3).getName()
+                + " " + resultList.get(3).getEmail());
+    }
 }
 
 

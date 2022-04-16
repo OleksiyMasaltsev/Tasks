@@ -28,11 +28,11 @@ public class UserBlocksTask {
     public static final String TWO_VALID_EMAILS_IN_LINE = "Wrong input data: 2 valid emails in the line #";
     public static final String NOT_ENOUGH_INFO_IN_LINE = "Wrong input data: not enough info in the line #";
 
-    private final Set<String> uniqueEmails = new HashSet<>();
+    private final Set<User> uniqueUsers = new HashSet<>();
 
     public List<User> extractUsersFrom(String input) {
 
-        final List<User> userList = new ArrayList<>();
+        final List<User> userList;
 
         String[] inputArray = input.split("\n");
         int lineCounter = 0;
@@ -40,20 +40,21 @@ public class UserBlocksTask {
         for (String inputLine : inputArray) {
             lineCounter++;
             User user = getValidUser(inputLine.trim(), lineCounter);
-            if (isEmailUnique(user.getEmail())) {
-                userList.add(user);
-            }
+            uniqueUsers.add(user);
+//            if (isEmailUnique(user.getEmail())) {
+//                userList.add(user);
+//            }
         }
-
+        userList = new ArrayList<>(uniqueUsers);
         return userList;
     }
 
-    private boolean isEmailUnique(String email) {
-        if (!uniqueEmails.contains(email)) {
-            uniqueEmails.add(email);
-            return true;
-        } else return false;
-    }
+//    private boolean isEmailUnique(String email) {
+//        if (!uniqueUsers.contains(email)) {
+//            uniqueUsers.add(email);
+//            return true;
+//        } else return false;
+//    }
 
     private User getValidUser(String inputLine, int lineCounter) {
 
