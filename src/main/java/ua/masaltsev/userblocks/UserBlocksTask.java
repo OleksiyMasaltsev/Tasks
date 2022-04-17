@@ -58,12 +58,12 @@ public class UserBlocksTask {
     private User getValidUser(String inputLine, int lineCounter) {
 
         String[] inputLineArray = inputLine.split(" ");
-        String s1;
-        String s2;
+        String firstElement;
+        String lastElement;
 
         if (inputLineArray.length > 1) {
-            s1 = inputLineArray[0];
-            s2 = inputLineArray[inputLineArray.length-1];
+            firstElement = inputLineArray[0];
+            lastElement = inputLineArray[inputLineArray.length-1];
         } else {
             throw new WrongInputException(NOT_ENOUGH_INFO_IN_LINE + lineCounter);
         }
@@ -71,18 +71,20 @@ public class UserBlocksTask {
         EmailValidator validator = EmailValidator.getInstance();
         String name;
         String email;
+        boolean isFirstValid = validator.isValid(firstElement);
+        boolean isLastValid = validator.isValid(lastElement);
 
-        if (validator.isValid(s1) && validator.isValid(s2)) {
+        if (isFirstValid && isLastValid) {
             throw new WrongInputException(TWO_VALID_EMAILS_IN_LINE + lineCounter);
         }
-        if (!validator.isValid(s1) && !validator.isValid(s2)) {
+        if (!isFirstValid && !isLastValid) {
             throw new WrongInputException(VALID_EMAIL_NOT_FOUND_IN_LINE + lineCounter);
-        } else if (validator.isValid(s1)){
-            email = s1;
+        } else if (isFirstValid){
+            email = firstElement;
             name = inputLine.substring(inputLine.indexOf(" ")+1);
             return new User(name, email);
         } else {
-            email = s2;
+            email = lastElement;
             name = inputLine.substring(0, inputLine.lastIndexOf(" "));
             return new User(name, email);
         }
